@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/toggles/dark-light-mode";
 import { Button } from "@/components/ui/button";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
@@ -15,6 +16,7 @@ export default function Home() {
       >
         Sign Up
       </Button>
+      <ModeToggle />
     </main>
   );
 }
