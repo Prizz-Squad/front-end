@@ -1,6 +1,8 @@
 import { SignupForm } from "@/components/forms/signup";
+import { useRouter } from "next/router";
 
 export default function SignupPage() {
+  const router = useRouter();
   return (
     <main className="flex items-center justify-center">
       <SignupForm
@@ -20,8 +22,11 @@ export default function SignupPage() {
           const json = await res.json();
           console.log("json", json);
           const { token } = json;
-          localStorage.setItem("token", token); //TODO: do not store token in local storage
-          console.log("token", token);
+          if (!token) {
+            console.error("Invalid credentials");
+            return;
+          }
+          router.push("/dashboard");
         }}
       />
     </main>

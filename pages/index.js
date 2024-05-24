@@ -16,6 +16,20 @@ export default function Home() {
       >
         Sign Up
       </Button>
+      <Button
+        onClick={() => {
+          router.push("/login");
+        }}
+      >
+        Login
+      </Button>
+      <Button
+        onClick={() => {
+          router.push("/dashboard");
+        }}
+      >
+        Dashboard
+      </Button>
       <ModeToggle />
     </main>
   );
