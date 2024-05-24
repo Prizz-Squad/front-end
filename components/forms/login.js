@@ -24,19 +24,13 @@ import {
 } from "@/components/ui/form";
 
 const FormSchema = z.object({
-  firstName: z.string().min(2, {
-    message: "First name is required.",
-  }),
-  lastName: z.string().min(2, {
-    message: "Last name is required.",
-  }),
   email: z.string().email("Invalid email address."),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
 });
 
-export function SignupForm({ onSubmit }) {
+export function LoginForm({ onSubmit }) {
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -49,45 +43,13 @@ export function SignupForm({ onSubmit }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <Card className="mx-auto max-w-sm">
           <CardHeader>
-            <CardTitle className="text-xl">Sign Up</CardTitle>
+            <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>
-              Enter your information to create an account
+              Enter your email below to login to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Anxhi" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Robinson" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
               <div className="grid gap-2">
                 <FormField
                   control={form.control}
@@ -109,7 +71,15 @@ export function SignupForm({ onSubmit }) {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <div className="flex justify-between">
+                        <FormLabel>Password</FormLabel>
+                        <Link
+                          href="#"
+                          className="ml-auto inline-block text-sm underline"
+                        >
+                          Forgot your password?
+                        </Link>
+                      </div>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
@@ -119,16 +89,16 @@ export function SignupForm({ onSubmit }) {
                 />
               </div>
               <Button type="submit" className="w-full">
-                Create an account
+                Login
               </Button>
               <Button variant="outline" className="w-full">
-                Sign up with GitHub
+                Login with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/login" className="underline">
-                Sign in
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="underline">
+                Sign up
               </Link>
             </div>
           </CardContent>
