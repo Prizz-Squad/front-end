@@ -30,6 +30,13 @@ export default function Home() {
       >
         Dashboard
       </Button>
+      <Button
+        onClick={() => {
+          router.push("/projects");
+        }}
+      >
+        Projects
+      </Button>
       <ModeToggle />
     </main>
   );
