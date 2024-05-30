@@ -36,26 +36,27 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "name",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />;
+      return <DataTableColumnHeader column={column} title="Name" />;
     },
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+    accessorKey: "description",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Description" />;
+    },
+  },
+  {
+    accessorKey: "userName",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Created by" />;
+    },
+  },
+  {
+    accessorKey: "clientName",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Client" />;
     },
   },
   {

@@ -12,6 +12,15 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 
 async function getData() {
@@ -19,11 +28,25 @@ async function getData() {
   return [
     {
       id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
+      name: "Project X",
+      description: "A project description.",
+      userName: "John Doe",
+      clientName: "ACME Inc.",
     },
-    // ...
+    {
+      id: "728ed52g",
+      name: "Project Y",
+      description: "Another project description.",
+      userName: "Jane Doe",
+      clientName: "ACME Inc.",
+    },
+    {
+      id: "728ed52h",
+      name: "Project Z",
+      description: "Yet another project description.",
+      userName: "John Doe",
+      clientName: "ACME Inc.",
+    },
   ];
 }
 
@@ -73,6 +96,26 @@ export default function DemoPage() {
                   defaultValue="A project description."
                   className="col-span-3"
                 />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="description" className="text-right">
+                  Client
+                </Label>
+
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select a client" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Clients</SelectLabel>
+                      <SelectItem value="acme">ACME Inc.</SelectItem>
+                      <SelectItem value="widget-co">Widget Co.</SelectItem>
+                      <SelectItem value="initech">Initech</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <DialogFooter>
