@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { fuzzyFilter } from "@/utils/filter";
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { DataTablePagination } from "./pagination";
@@ -23,6 +24,8 @@ export function DataTable({ columns, data }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
+
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const table = useReactTable({
     data,
@@ -34,10 +37,16 @@ export function DataTable({ columns, data }) {
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "fuzzy",
     state: {
       sorting,
       columnFilters,
       rowSelection,
+      globalFilter,
+    },
+    filterFns: {
+      fuzzy: fuzzyFilter, //define as a filter function that can be used in column definitions
     },
   });
 
@@ -46,10 +55,8 @@ export function DataTable({ columns, data }) {
       <div className="flex items-center py-4">
         <Input
           placeholder="Start typing to filter..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
       </div>

@@ -77,11 +77,11 @@ export const columns = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              Copy payment ID
+              Copy Project ID
             </DropdownMenuItem>
+            <DropdownMenuItem>Project settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Delete project</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
