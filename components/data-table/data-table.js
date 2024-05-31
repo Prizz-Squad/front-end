@@ -5,7 +5,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 
 import {
   Table,
@@ -14,18 +14,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { fuzzyFilter } from "@/utils/filter";
-import { useState } from "react";
-import { Input } from "../ui/input";
-import { DataTablePagination } from "./pagination";
+} from "@/components/ui/table"
+import { fuzzyFilter } from "@/utils/filter"
+import { useState } from "react"
+import { Input } from "../ui/input"
+import { DataTablePagination } from "./pagination"
 
-export function DataTable({ columns, data }) {
-  const [sorting, setSorting] = useState([]);
-  const [columnFilters, setColumnFilters] = useState([]);
-  const [rowSelection, setRowSelection] = useState({});
+export function DataTable({ columns, data, onDelete }) {
+  const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState([])
+  const [rowSelection, setRowSelection] = useState({})
 
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useState("")
 
   const table = useReactTable({
     data,
@@ -48,7 +48,7 @@ export function DataTable({ columns, data }) {
     filterFns: {
       fuzzy: fuzzyFilter, //define as a filter function that can be used in column definitions
     },
-  });
+  })
 
   return (
     <div>
@@ -75,7 +75,7 @@ export function DataTable({ columns, data }) {
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -112,5 +112,5 @@ export function DataTable({ columns, data }) {
       </div>
       <DataTablePagination table={table} />
     </div>
-  );
+  )
 }

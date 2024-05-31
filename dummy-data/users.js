@@ -1,3 +1,5 @@
+export const userId = 1
+
 export const users = [
   {
     id: 1,
