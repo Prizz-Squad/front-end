@@ -27,6 +27,7 @@ import {
 import { Button } from "../ui/button"
 import { Paperclip, PaperclipIcon } from "lucide-react"
 import { Textarea } from "../ui/textarea"
+import { Input } from "../ui/input"
 
 const defaultCols = [
   {
@@ -123,7 +124,14 @@ export function KanbanBoard({ cols = defaultCols }) {
 
   const [showDialog, setShowDialog] = useState(false)
   const [dialogTask, setDialogTask] = useState(null)
-  console.log("KanbanBoard dialogTask", dialogTask)
+
+  const [globalFilter, setGlobalFilter] = useState("")
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      return task.content.toLowerCase().includes(globalFilter.toLowerCase())
+    })
+  }, [tasks, globalFilter])
+
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
@@ -133,7 +141,9 @@ export function KanbanBoard({ cols = defaultCols }) {
   )
 
   function getDraggingTaskData(taskId, columnId) {
-    const tasksInColumn = tasks.filter((task) => task.columnId === columnId)
+    const tasksInColumn = filteredTasks.filter(
+      (task) => task.columnId === columnId
+    )
     const taskPosition = tasksInColumn.findIndex((task) => task.id === taskId)
     const column = columns.find((col) => col.id === columnId)
     return {
@@ -240,6 +250,12 @@ export function KanbanBoard({ cols = defaultCols }) {
 
   return (
     <>
+      <Input
+        placeholder="Start typing to filter..."
+        value={globalFilter}
+        onChange={(event) => setGlobalFilter(event.target.value)}
+        className="max-w-sm my-4"
+      />
       <DndContext
         accessibility={{
           announcements,
@@ -255,7 +271,7 @@ export function KanbanBoard({ cols = defaultCols }) {
               <BoardColumn
                 key={col.id}
                 column={col}
-                tasks={tasks.filter((task) => task.columnId === col.id)}
+                tasks={filteredTasks.filter((task) => task.columnId === col.id)}
                 onTaskClick={(task) => {
                   console.log("Task clicked: ", task)
                   setShowDialog(true)
@@ -271,7 +287,9 @@ export function KanbanBoard({ cols = defaultCols }) {
             <BoardColumn
               isOverlay
               column={activeColumn}
-              tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
+              tasks={filteredTasks.filter(
+                (task) => task.columnId === activeColumn.id
+              )}
             />
           )}
           {activeTask && <TaskCard task={activeTask} isOverlay />}
