@@ -1,6 +1,11 @@
-import { useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react";
 
-import { BoardColumn, BoardContainer } from "./BoardColumn"
+import { BoardColumn, BoardContainer } from "./BoardColumn";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input"
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import {
   DndContext,
   DragOverlay,
@@ -11,11 +16,11 @@ import {
   UniqueIdentifier,
   TouchSensor,
   MouseSensor,
-} from "@dnd-kit/core"
-import { SortableContext, arrayMove } from "@dnd-kit/sortable"
-import { TaskCard } from "./TaskCard"
-import { hasDraggableData } from "./utils"
-import { coordinateGetter } from "./multipleContainersKeyboardPreset"
+} from "@dnd-kit/core";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { TaskCard } from "./TaskCard";
+import { hasDraggableData } from "./utils";
+import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import {
   Dialog,
   DialogContent,
@@ -23,11 +28,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog"
-import { Button } from "../ui/button"
-import { Paperclip, PaperclipIcon } from "lucide-react"
-import { Textarea } from "../ui/textarea"
-
+} from "../ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "../ui/button";
+import { Bolt, Paperclip, PaperclipIcon } from "lucide-react";
+import { Textarea } from "../ui/textarea";
+import { AvatarIcon } from "@radix-ui/react-icons";
 const defaultCols = [
   {
     id: "todo",
@@ -41,7 +55,7 @@ const defaultCols = [
     id: "done",
     title: "Done",
   },
-]
+];
 
 const initialTasks = [
   {
@@ -109,73 +123,73 @@ const initialTasks = [
     columnId: "DESIGN",
     content: "Launch website and deploy to server",
   },
-]
+];
 export function KanbanBoard({ cols = defaultCols }) {
-  const [columns, setColumns] = useState(cols)
-  const pickedUpTaskColumn = useRef(null)
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns])
+  const [columns, setColumns] = useState(cols);
+  const pickedUpTaskColumn = useRef(null);
+  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  const [tasks, setTasks] = useState(initialTasks)
+  const [tasks, setTasks] = useState(initialTasks);
 
-  const [activeColumn, setActiveColumn] = useState(null)
+  const [activeColumn, setActiveColumn] = useState(null);
 
-  const [activeTask, setActiveTask] = useState(null)
+  const [activeTask, setActiveTask] = useState(null);
 
-  const [showDialog, setShowDialog] = useState(false)
-  const [dialogTask, setDialogTask] = useState(null)
-  console.log("KanbanBoard dialogTask", dialogTask)
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogTask, setDialogTask] = useState(null);
+  console.log("KanbanBoard dialogTask", dialogTask);
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: coordinateGetter,
     })
-  )
+  );
 
   function getDraggingTaskData(taskId, columnId) {
-    const tasksInColumn = tasks.filter((task) => task.columnId === columnId)
-    const taskPosition = tasksInColumn.findIndex((task) => task.id === taskId)
-    const column = columns.find((col) => col.id === columnId)
+    const tasksInColumn = tasks.filter((task) => task.columnId === columnId);
+    const taskPosition = tasksInColumn.findIndex((task) => task.id === taskId);
+    const column = columns.find((col) => col.id === columnId);
     return {
       tasksInColumn,
       taskPosition,
       column,
-    }
+    };
   }
 
   const announcements = {
     onDragStart({ active }) {
-      if (!hasDraggableData(active)) return
+      if (!hasDraggableData(active)) return;
       if (active.data.current?.type === "Column") {
-        const startColumnIdx = columnsId.findIndex((id) => id === active.id)
-        const startColumn = columns[startColumnIdx]
+        const startColumnIdx = columnsId.findIndex((id) => id === active.id);
+        const startColumn = columns[startColumnIdx];
         return `Picked up Column ${startColumn?.title} at position: ${
           startColumnIdx + 1
-        } of ${columnsId.length}`
+        } of ${columnsId.length}`;
       } else if (active.data.current?.type === "Task") {
-        pickedUpTaskColumn.current = active.data.current.task.columnId
+        pickedUpTaskColumn.current = active.data.current.task.columnId;
         const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
           active.id,
           pickedUpTaskColumn.current
-        )
+        );
         return `Picked up Task ${
           active.data.current.task.content
         } at position: ${taskPosition + 1} of ${
           tasksInColumn.length
-        } in column ${column?.title}`
+        } in column ${column?.title}`;
       }
     },
     onDragOver({ active, over }) {
-      if (!hasDraggableData(active) || !hasDraggableData(over)) return
+      if (!hasDraggableData(active) || !hasDraggableData(over)) return;
 
       if (
         active.data.current?.type === "Column" &&
         over.data.current?.type === "Column"
       ) {
-        const overColumnIdx = columnsId.findIndex((id) => id === over.id)
+        const overColumnIdx = columnsId.findIndex((id) => id === over.id);
         return `Column ${active.data.current.column.title} was moved over ${
           over.data.current.column.title
-        } at position ${overColumnIdx + 1} of ${columnsId.length}`
+        } at position ${overColumnIdx + 1} of ${columnsId.length}`;
       } else if (
         active.data.current?.type === "Task" &&
         over.data.current?.type === "Task"
@@ -183,35 +197,35 @@ export function KanbanBoard({ cols = defaultCols }) {
         const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
           over.id,
           over.data.current.task.columnId
-        )
+        );
         if (over.data.current.task.columnId !== pickedUpTaskColumn.current) {
           return `Task ${
             active.data.current.task.content
           } was moved over column ${column?.title} in position ${
             taskPosition + 1
-          } of ${tasksInColumn.length}`
+          } of ${tasksInColumn.length}`;
         }
         return `Task was moved over position ${taskPosition + 1} of ${
           tasksInColumn.length
-        } in column ${column?.title}`
+        } in column ${column?.title}`;
       }
     },
     onDragEnd({ active, over }) {
       if (!hasDraggableData(active) || !hasDraggableData(over)) {
-        pickedUpTaskColumn.current = null
-        return
+        pickedUpTaskColumn.current = null;
+        return;
       }
       if (
         active.data.current?.type === "Column" &&
         over.data.current?.type === "Column"
       ) {
-        const overColumnPosition = columnsId.findIndex((id) => id === over.id)
+        const overColumnPosition = columnsId.findIndex((id) => id === over.id);
 
         return `Column ${
           active.data.current.column.title
         } was dropped into position ${overColumnPosition + 1} of ${
           columnsId.length
-        }`
+        }`;
       } else if (
         active.data.current?.type === "Task" &&
         over.data.current?.type === "Task"
@@ -219,24 +233,25 @@ export function KanbanBoard({ cols = defaultCols }) {
         const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
           over.id,
           over.data.current.task.columnId
-        )
+        );
         if (over.data.current.task.columnId !== pickedUpTaskColumn.current) {
           return `Task was dropped into column ${column?.title} in position ${
             taskPosition + 1
-          } of ${tasksInColumn.length}`
+          } of ${tasksInColumn.length}`;
         }
         return `Task was dropped into position ${taskPosition + 1} of ${
           tasksInColumn.length
-        } in column ${column?.title}`
+        } in column ${column?.title}`;
       }
-      pickedUpTaskColumn.current = null
+      pickedUpTaskColumn.current = null;
     },
     onDragCancel({ active }) {
-      pickedUpTaskColumn.current = null
-      if (!hasDraggableData(active)) return
-      return `Dragging ${active.data.current?.type} cancelled.`
+      pickedUpTaskColumn.current = null;
+      if (!hasDraggableData(active)) return;
+      return `Dragging ${active.data.current?.type} cancelled.`;
     },
-  }
+  };
+  console.log(dialogTask, "tialog");
 
   return (
     <>
@@ -257,9 +272,9 @@ export function KanbanBoard({ cols = defaultCols }) {
                 column={col}
                 tasks={tasks.filter((task) => task.columnId === col.id)}
                 onTaskClick={(task) => {
-                  console.log("Task clicked: ", task)
-                  setShowDialog(true)
-                  setDialogTask(task)
+                  console.log("Task clicked: ", task);
+                  setShowDialog(true);
+                  setDialogTask(task);
                 }}
               />
             ))}
@@ -278,137 +293,211 @@ export function KanbanBoard({ cols = defaultCols }) {
         </DragOverlay>
       </DndContext>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
-            <DialogDescription>
-              {dialogTask?.content || "Content"}
-            </DialogDescription>
-          </DialogHeader>
-          <div>
+        <DialogContent className="flex justify-between p-14  min-w-[54%] h-[80%]  flex-row">
+          <div className="flex flex-col  w-[54%] justify-between">
+            <DialogHeader>
+              <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
+              <div>
+                  <Button variant="ghost" className='p-0'>
+                    <PaperclipIcon size={20} />
+                    Attach a file
+                  </Button>
+                </div>
+              <DialogDescription>
+                {dialogTask?.content || "Content"}
+              </DialogDescription>
+            </DialogHeader>
             <div>
               <div>
-                <Button variant="ghost">
-                  <PaperclipIcon size={20} />
-                  Attach a file
-                </Button>
-              </div>
+               
 
-              <h4 className="text-sm font-semibold">Description</h4>
-              <Textarea />
 
-              <h4 className="text-sm font-semibold">Comments</h4>
-              <div>
-                <div>
-                  <span>Comment</span>
+                <h4 className="text-sm font-semibold mt-2">Comments</h4>
+                <div className="flex gap-x-2 mt-4 items-center flex-row">
+                <p className="">Show:</p>
+                <div className="flex flex-row gap-x-2">
+                 <Badge>All</Badge>
+                 <Badge>Comments</Badge>
+                 <Badge>History</Badge>
                 </div>
+                </div>                
+                <div className="mt-2 flex gap-x-4 flex-row">
+                <Avatar className="w-8 h-8">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <Input className='w-full h-8' placeholder='Write a comment' />
 
-                <div>
-                  <span>Comment</span>
+
                 </div>
               </div>
             </div>
-            <div></div>
+          </div>
+
+          <div className="flex flex-col min-w-2/3 justify-around">
+            <div>
+            <Select>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="In Progress" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="todo">To-Do</SelectItem>
+                  <SelectItem value="done">Done</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <div className="m-1">
+              <p className="font-bold text-xl mt-2">Details</p>
+
+              <div className="flex mt-4 flex-row justify-between items-center">
+                <p className="">Assigne</p>
+                <Avatar className="w-8 h-8">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="flex mt-4  flex-row justify-between items-center">
+                <p className="mr-4">Label</p>
+                <div className="flex flex-row gap-x-2 flex-wrap">
+                  <Badge>Bug</Badge>
+                  <Badge>Feature</Badge>
+                  <Badge>Documentation</Badge>
+                </div>
+              </div>
+              <div className="flex mt-4 flex-row justify-between items-center">
+                <p className="">Reporter</p>
+                <Avatar className="w-8 h-8">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>{" "}
+              </div>
+            </div>
+            </div>
+            <div className="flex flex-row items-start justify-between ">
+
+            <div className="flex text-sm  flex-col gap-y-2">
+            <p>Created 10 hours ago</p>
+            <p>Updated 9 hours ago</p>
+            </div>
+
+            <div className="flex cursor-pointer flex-row text-center justify-center items-center">
+            <Bolt className="w-5 h-5"/>
+            <p className="text-sm ml-1 mb-1">Configure</p>
+            </div>
+             
+            </div>
           </div>
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 
   function onDragStart(event) {
-    if (!hasDraggableData(event.active)) return
-    const data = event.active.data.current
+    if (!hasDraggableData(event.active)) return;
+    const data = event.active.data.current;
     if (data?.type === "Column") {
-      setActiveColumn(data.column)
-      return
+      setActiveColumn(data.column);
+      return;
     }
 
     if (data?.type === "Task") {
-      setActiveTask(data.task)
-      return
+      setActiveTask(data.task);
+      return;
     }
   }
 
   function onDragEnd(event) {
-    setActiveColumn(null)
-    setActiveTask(null)
+    setActiveColumn(null);
+    setActiveTask(null);
 
-    const { active, over } = event
-    if (!over) return
+    const { active, over } = event;
+    if (!over) return;
 
-    const activeId = active.id
-    const overId = over.id
+    const activeId = active.id;
+    const overId = over.id;
 
-    if (!hasDraggableData(active)) return
+    if (!hasDraggableData(active)) return;
 
-    const activeData = active.data.current
+    const activeData = active.data.current;
 
-    if (activeId === overId) return
+    if (activeId === overId) return;
 
-    const isActiveAColumn = activeData?.type === "Column"
-    if (!isActiveAColumn) return
+    const isActiveAColumn = activeData?.type === "Column";
+    if (!isActiveAColumn) return;
 
     setColumns((columns) => {
-      const activeColumnIndex = columns.findIndex((col) => col.id === activeId)
+      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
 
-      const overColumnIndex = columns.findIndex((col) => col.id === overId)
+      const overColumnIndex = columns.findIndex((col) => col.id === overId);
 
-      return arrayMove(columns, activeColumnIndex, overColumnIndex)
-    })
+      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+    });
   }
 
   function onDragOver(event) {
-    const { active, over } = event
-    if (!over) return
+    const { active, over } = event;
+    if (!over) return;
 
-    const activeId = active.id
-    const overId = over.id
+    const activeId = active.id;
+    const overId = over.id;
 
-    if (activeId === overId) return
+    if (activeId === overId) return;
 
-    if (!hasDraggableData(active) || !hasDraggableData(over)) return
+    if (!hasDraggableData(active) || !hasDraggableData(over)) return;
 
-    const activeData = active.data.current
-    const overData = over.data.current
+    const activeData = active.data.current;
+    const overData = over.data.current;
 
-    const isActiveATask = activeData?.type === "Task"
-    const isOverATask = overData?.type === "Task"
+    const isActiveATask = activeData?.type === "Task";
+    const isOverATask = overData?.type === "Task";
 
-    if (!isActiveATask) return
+    if (!isActiveATask) return;
 
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId)
-        const overIndex = tasks.findIndex((t) => t.id === overId)
-        const activeTask = tasks[activeIndex]
-        const overTask = tasks[overIndex]
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        const overIndex = tasks.findIndex((t) => t.id === overId);
+        const activeTask = tasks[activeIndex];
+        const overTask = tasks[overIndex];
         if (
           activeTask &&
           overTask &&
           activeTask.columnId !== overTask.columnId
         ) {
-          activeTask.columnId = overTask.columnId
-          return arrayMove(tasks, activeIndex, overIndex - 1)
+          activeTask.columnId = overTask.columnId;
+          return arrayMove(tasks, activeIndex, overIndex - 1);
         }
 
-        return arrayMove(tasks, activeIndex, overIndex)
-      })
+        return arrayMove(tasks, activeIndex, overIndex);
+      });
     }
 
-    const isOverAColumn = overData?.type === "Column"
+    const isOverAColumn = overData?.type === "Column";
 
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId)
-        const activeTask = tasks[activeIndex]
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        const activeTask = tasks[activeIndex];
         if (activeTask) {
-          activeTask.columnId = overId
-          return arrayMove(tasks, activeIndex, activeIndex)
+          activeTask.columnId = overId;
+          return arrayMove(tasks, activeIndex, activeIndex);
         }
-        return tasks
-      })
+        return tasks;
+      });
     }
   }
 }
