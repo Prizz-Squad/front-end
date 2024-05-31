@@ -24,6 +24,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog"
+import { Button } from "../ui/button"
+import { Paperclip, PaperclipIcon } from "lucide-react"
+import { Textarea } from "../ui/textarea"
 
 const defaultCols = [
   {
@@ -278,8 +281,35 @@ export function KanbanBoard({ cols = defaultCols }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
-            <DialogDescription>{dialogTask?.content}</DialogDescription>
+            <DialogDescription>
+              {dialogTask?.content || "Content"}
+            </DialogDescription>
           </DialogHeader>
+          <div>
+            <div>
+              <div>
+                <Button variant="ghost">
+                  <PaperclipIcon size={20} />
+                  Attach a file
+                </Button>
+              </div>
+
+              <h4 className="text-sm font-semibold">Description</h4>
+              <Textarea />
+
+              <h4 className="text-sm font-semibold">Comments</h4>
+              <div>
+                <div>
+                  <span>Comment</span>
+                </div>
+
+                <div>
+                  <span>Comment</span>
+                </div>
+              </div>
+            </div>
+            <div></div>
+          </div>
         </DialogContent>
       </Dialog>
     </>
