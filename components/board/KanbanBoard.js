@@ -1,6 +1,11 @@
 import { useMemo, useRef, useState } from "react"
 
 import { BoardColumn, BoardContainer } from "./BoardColumn"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 import {
   DndContext,
   DragOverlay,
@@ -25,9 +30,16 @@ import {
   DialogTrigger,
 } from "../ui/dialog"
 import { Button } from "../ui/button"
-import { Paperclip, PaperclipIcon } from "lucide-react"
+import { Bolt, Paperclip, PaperclipIcon } from "lucide-react"
 import { Textarea } from "../ui/textarea"
-import { Input } from "../ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select"
 
 const defaultCols = [
   {
@@ -247,6 +259,7 @@ export function KanbanBoard({ cols = defaultCols }) {
       return `Dragging ${active.data.current?.type} cancelled.`
     },
   }
+  console.log(dialogTask, "tialog")
 
   return (
     <>
@@ -296,37 +309,104 @@ export function KanbanBoard({ cols = defaultCols }) {
         </DragOverlay>
       </DndContext>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
-            <DialogDescription>
-              {dialogTask?.content || "Content"}
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <div>
+        <DialogContent className="flex justify-between p-14  min-w-[54%] h-[80%]  flex-col md:flex-row">
+          <div className="flex flex-col  w-[54%] justify-between">
+            <DialogHeader>
+              <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
               <div>
-                <Button variant="ghost">
+                <Button variant="ghost" className="p-0">
                   <PaperclipIcon size={20} />
                   Attach a file
                 </Button>
               </div>
-
-              <h4 className="text-sm font-semibold">Description</h4>
-              <Textarea />
-
-              <h4 className="text-sm font-semibold">Comments</h4>
+              <DialogDescription>
+                {dialogTask?.content || "Content"}
+              </DialogDescription>
+            </DialogHeader>
+            <div>
               <div>
-                <div>
-                  <span>Comment</span>
+                <h4 className="text-sm font-semibold mt-2">Comments</h4>
+                <div className="flex gap-x-2 mt-4 items-center flex-row">
+                  <p className="">Show:</p>
+                  <div className="flex flex-row gap-x-2">
+                    <Badge>All</Badge>
+                    <Badge>Comments</Badge>
+                    <Badge>History</Badge>
+                  </div>
                 </div>
-
-                <div>
-                  <span>Comment</span>
+                <div className="mt-2 flex gap-x-4 flex-row">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <Input className="w-full h-8" placeholder="Write a comment" />
                 </div>
               </div>
             </div>
-            <div></div>
+          </div>
+
+          <div className="flex flex-col min-w-2/3 justify-around">
+            <div>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="In Progress" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="todo">To-Do</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              <div className="m-1">
+                <p className="font-bold text-xl mt-2">Details</p>
+
+                <div className="flex mt-4 flex-row justify-between items-center">
+                  <p className="">Assigne</p>
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="flex mt-4  flex-row justify-between items-center">
+                  <p className="mr-4">Label</p>
+                  <div className="flex flex-row gap-x-2 flex-wrap">
+                    <Badge>Bug</Badge>
+                    <Badge>Feature</Badge>
+                    <Badge>Documentation</Badge>
+                  </div>
+                </div>
+                <div className="flex mt-4 flex-row justify-between items-center">
+                  <p className="">Reporter</p>
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>{" "}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-row items-start justify-between ">
+              <div className="flex text-sm  flex-col gap-y-2">
+                <p>Created 10 hours ago</p>
+                <p>Updated 9 hours ago</p>
+              </div>
+
+              <div className="flex cursor-pointer flex-row text-center justify-center items-center">
+                <Bolt className="w-5 h-5" />
+                <p className="text-sm ml-1 mb-1">Configure</p>
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
