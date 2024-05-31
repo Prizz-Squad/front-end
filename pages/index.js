@@ -37,6 +37,13 @@ export default function Home() {
       >
         Projects
       </Button>
+      <Button
+        onClick={() => {
+          router.push("/settings");
+        }}
+      >
+        Settings
+      </Button>
       <ModeToggle />
     </main>
   );
