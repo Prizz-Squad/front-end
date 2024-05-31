@@ -1,5 +1,6 @@
 import { labels, priorities, statuses } from "../../constants/list"
 import { DataTableColumnHeader } from "../data-table/col-header"
+import { TasksListRowActions } from "../row-actions.js/tasks-list"
 import { Badge } from "../ui/badge"
 import { Checkbox } from "../ui/checkbox"
 
@@ -109,8 +110,8 @@ export const columns = [
       return value.includes(row.getValue(id))
     },
   },
-  //   {
-  //     id: "actions",
-  //     cell: ({ row }) => <DataTableRowActions row={row} />,
-  //   },
+  {
+    id: "actions",
+    cell: ({ row }) => <TasksListRowActions row={row} />,
+  },
 ]

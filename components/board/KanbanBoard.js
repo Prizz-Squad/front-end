@@ -119,7 +119,8 @@ export function KanbanBoard({ cols = defaultCols }) {
   const [activeTask, setActiveTask] = useState(null)
 
   const [showDialog, setShowDialog] = useState(false)
-
+  const [dialogTask, setDialogTask] = useState(null)
+  console.log("KanbanBoard dialogTask", dialogTask)
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
@@ -255,6 +256,7 @@ export function KanbanBoard({ cols = defaultCols }) {
                 onTaskClick={(task) => {
                   console.log("Task clicked: ", task)
                   setShowDialog(true)
+                  setDialogTask(task)
                 }}
               />
             ))}
@@ -275,11 +277,8 @@ export function KanbanBoard({ cols = defaultCols }) {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </DialogDescription>
+            <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
+            <DialogDescription>{dialogTask?.content}</DialogDescription>
           </DialogHeader>
         </DialogContent>
       </Dialog>
