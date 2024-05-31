@@ -7,7 +7,7 @@ import { GripVertical } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { ColumnId } from "./KanbanBoard"
 
-export function TaskCard({ task, isOverlay }) {
+export function TaskCard({ task, isOverlay, onClick }) {
   const {
     setNodeRef,
     attributes,
@@ -47,6 +47,7 @@ export function TaskCard({ task, isOverlay }) {
       className={variants({
         dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
       })}
+      onClick={onClick}
     >
       <CardHeader className="px-3 py-3 space-between flex flex-row border-b-2 border-secondary relative">
         <Button

@@ -1,7 +1,7 @@
-import { labels, priorities, statuses } from "../constants/list";
-import { DataTableColumnHeader } from "../data-table/col-header";
-import { Badge } from "../ui/badge";
-import { Checkbox } from "../ui/checkbox";
+import { labels, priorities, statuses } from "../../constants/list"
+import { DataTableColumnHeader } from "../data-table/col-header"
+import { Badge } from "../ui/badge"
+import { Checkbox } from "../ui/checkbox"
 
 export const columns = [
   {
@@ -43,7 +43,7 @@ export const columns = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
+      const label = labels.find((label) => label.value === row.original.label)
 
       return (
         <div className="flex space-x-2">
@@ -52,7 +52,7 @@ export const columns = [
             {row.getValue("title")}
           </span>
         </div>
-      );
+      )
     },
   },
   {
@@ -63,10 +63,10 @@ export const columns = [
     cell: ({ row }) => {
       const status = statuses.find(
         (status) => status.value === row.getValue("status")
-      );
+      )
 
       if (!status) {
-        return null;
+        return null
       }
 
       return (
@@ -76,10 +76,10 @@ export const columns = [
           )}
           <span>{status.label}</span>
         </div>
-      );
+      )
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.getValue(id))
     },
   },
   {
@@ -90,10 +90,10 @@ export const columns = [
     cell: ({ row }) => {
       const priority = priorities.find(
         (priority) => priority.value === row.getValue("priority")
-      );
+      )
 
       if (!priority) {
-        return null;
+        return null
       }
 
       return (
@@ -103,14 +103,14 @@ export const columns = [
           )}
           <span>{priority.label}</span>
         </div>
-      );
+      )
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.getValue(id))
     },
   },
   //   {
   //     id: "actions",
   //     cell: ({ row }) => <DataTableRowActions row={row} />,
   //   },
-];
+]

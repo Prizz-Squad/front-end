@@ -9,7 +9,7 @@ import { Button } from "../ui/button"
 import { GripVertical } from "lucide-react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
-export function BoardColumn({ column, tasks, isOverlay }) {
+export function BoardColumn({ column, tasks, isOverlay, onTaskClick }) {
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id)
   }, [tasks])
@@ -74,7 +74,13 @@ export function BoardColumn({ column, tasks, isOverlay }) {
         <CardContent className="flex flex-grow flex-col gap-2 p-2">
           <SortableContext items={tasksIds}>
             {tasks.map((task) => (
-              <TaskCard key={task.id} task={task} />
+              <TaskCard
+                key={task.id}
+                task={task}
+                onClick={() => {
+                  onTaskClick(task)
+                }}
+              />
             ))}
           </SortableContext>
         </CardContent>

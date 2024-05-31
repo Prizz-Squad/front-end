@@ -16,6 +16,14 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable"
 import { TaskCard } from "./TaskCard"
 import { hasDraggableData } from "./utils"
 import { coordinateGetter } from "./multipleContainersKeyboardPreset"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog"
 
 const defaultCols = [
   {
@@ -85,22 +93,22 @@ const initialTasks = [
   },
   {
     id: "task11",
-    columnId: "todo",
+    columnId: "SCHEDULE",
     content: "Integrate payment gateway",
   },
   {
     id: "task12",
-    columnId: "todo",
+    columnId: "CAPTION",
     content: "Perform testing and bug fixing",
   },
   {
     id: "task13",
-    columnId: "todo",
+    columnId: "DESIGN",
     content: "Launch website and deploy to server",
   },
 ]
-export function KanbanBoard() {
-  const [columns, setColumns] = useState(defaultCols)
+export function KanbanBoard({ cols = defaultCols }) {
+  const [columns, setColumns] = useState(cols)
   const pickedUpTaskColumn = useRef(null)
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns])
 
@@ -109,6 +117,8 @@ export function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null)
 
   const [activeTask, setActiveTask] = useState(null)
+
+  const [showDialog, setShowDialog] = useState(false)
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -225,38 +235,55 @@ export function KanbanBoard() {
   }
 
   return (
-    <DndContext
-      accessibility={{
-        announcements,
-      }}
-      sensors={sensors}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-    >
-      <BoardContainer>
-        <SortableContext items={columnsId}>
-          {columns.map((col) => (
-            <BoardColumn
-              key={col.id}
-              column={col}
-              tasks={tasks.filter((task) => task.columnId === col.id)}
-            />
-          ))}
-        </SortableContext>
-      </BoardContainer>
+    <>
+      <DndContext
+        accessibility={{
+          announcements,
+        }}
+        sensors={sensors}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+      >
+        <BoardContainer>
+          <SortableContext items={columnsId}>
+            {columns.map((col) => (
+              <BoardColumn
+                key={col.id}
+                column={col}
+                tasks={tasks.filter((task) => task.columnId === col.id)}
+                onTaskClick={(task) => {
+                  console.log("Task clicked: ", task)
+                  setShowDialog(true)
+                }}
+              />
+            ))}
+          </SortableContext>
+        </BoardContainer>
 
-      <DragOverlay>
-        {activeColumn && (
-          <BoardColumn
-            isOverlay
-            column={activeColumn}
-            tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
-          />
-        )}
-        {activeTask && <TaskCard task={activeTask} isOverlay />}
-      </DragOverlay>
-    </DndContext>
+        <DragOverlay>
+          {activeColumn && (
+            <BoardColumn
+              isOverlay
+              column={activeColumn}
+              tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
+            />
+          )}
+          {activeTask && <TaskCard task={activeTask} isOverlay />}
+        </DragOverlay>
+      </DndContext>
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 
   function onDragStart(event) {

@@ -5,8 +5,22 @@ export default function ProjectBoardPage() {
   return (
     <div>
       <ProjectTabs />
-      board
-      <KanbanBoard />
+      <KanbanBoard
+        cols={[
+          {
+            id: "DESIGN",
+            title: "Design",
+          },
+          {
+            id: "CAPTION",
+            title: "Caption",
+          },
+          {
+            id: "SCHEDULE",
+            title: "Schedule",
+          },
+        ]}
+      />
     </div>
   )
 }
