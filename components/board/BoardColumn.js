@@ -107,9 +107,7 @@ export function BoardContainer({ children }) {
         dragging: dndContext.active ? "active" : "default",
       })}
     >
-      <div className="flex gap-4 items-center flex-row justify-center">
-        {children}
-      </div>
+      <div className="flex gap-4 items-center flex-row">{children}</div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
   )

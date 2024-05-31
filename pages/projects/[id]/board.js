@@ -3,7 +3,7 @@ import { ProjectTabs } from "@/components/tabs/project-tabs"
 
 export default function ProjectBoardPage() {
   return (
-    <div>
+    <div className="ms-2">
       <ProjectTabs />
       <KanbanBoard
         cols={[

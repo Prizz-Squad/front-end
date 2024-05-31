@@ -1,6 +1,6 @@
-import { columns } from "@/components/columns/project";
-import { DataTable } from "@/components/data-table/data-table";
-import { Button } from "@/components/ui/button";
+import { columns } from "@/components/columns/project"
+import { DataTable } from "@/components/data-table/data-table"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -20,8 +20,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useEffect, useState } from "react";
+} from "@/components/ui/select"
+import { useEffect, useState } from "react"
+import { userId } from "@/dummy-data/users"
+import { toast } from "sonner"
 
 async function getData() {
   // Fetch data from your API here.
@@ -47,17 +49,42 @@ async function getData() {
       userName: "John Doe",
       clientName: "ACME Inc.",
     },
-  ];
+  ]
 }
 
 export default function DemoPage() {
-  const [data, setdata] = useState([]);
+  const [data, setdata] = useState([])
+
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   useEffect(() => {
     getData().then((data) => {
-      setdata(data);
-    });
-  }, []);
+      setdata(data)
+    })
+  }, [])
+
+  const handleSave = () => {
+    console.log("Form submitted")
+    try {
+      const newProject = {
+        name,
+        description,
+        userId,
+      }
+      console.log(newProject)
+
+      // TODO: Save the new project to the database.
+
+      setName("")
+      setDescription("")
+      toast("Project created successfully")
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between">
@@ -83,7 +110,9 @@ export default function DemoPage() {
                 </Label>
                 <Input
                   id="name"
-                  defaultValue="Project X"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Project X"
                   className="col-span-3"
                 />
               </div>
@@ -93,11 +122,13 @@ export default function DemoPage() {
                 </Label>
                 <Input
                   id="description"
-                  defaultValue="A project description."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Marketing campaign"
                   className="col-span-3"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
+              {/* <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="description" className="text-right">
                   Client
                 </Label>
@@ -116,15 +147,17 @@ export default function DemoPage() {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
             </div>
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" onClick={handleSave}>
+                Save changes
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
       <DataTable columns={columns} data={data} />
     </div>
-  );
+  )
 }
