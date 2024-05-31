@@ -1,9 +1,9 @@
 /**
  * v0 by Vercel.
  */
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Settings() {
   return (
@@ -11,10 +11,18 @@ export default function Settings() {
       <div className=" py-6 px-4 space-y-6 md:px-6">
         <header className="space-y-1.5">
           <div className="flex items-center space-x-4">
-            <img src="/placeholder.svg" alt="Avatar" width="96" height="96" className="border rounded-full" />
+            <img
+              src="https://github.com/shadcn.png"
+              alt="Avatar"
+              width="96"
+              height="96"
+              className="border rounded-full"
+            />
             <div className="space-y-1.5">
               <h1 className="text-2xl font-bold">Catherine Grant</h1>
-              <p className="text-gray-500 dark:text-gray-400">Product Designer</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                Product Designer
+              </p>
             </div>
           </div>
         </header>
@@ -24,7 +32,11 @@ export default function Settings() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Enter your name" defaultValue="Catherine Grant" />
+                <Input
+                  id="name"
+                  placeholder="Enter your name"
+                  defaultValue="Catherine Grant"
+                />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
@@ -48,12 +60,11 @@ export default function Settings() {
               </div>
             </div>
           </div>
-       
         </div>
         <div className="mt-8">
           <Button size="lg">Save</Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
