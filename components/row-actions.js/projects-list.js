@@ -101,7 +101,7 @@ export function ProjectsListRowActions({ row }) {
             <DialogTitle>Are you absolutely sure?</DialogTitle>
             <DialogDescription>
               This action cannot be undone. This will permanently delete your
-              project and remove it's data from our servers.
+              project and remove its data from our servers.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
