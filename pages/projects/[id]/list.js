@@ -1,6 +1,6 @@
-import { columns } from "@/components/columns/tasks-list";
-import { DataTable } from "@/components/data-table/data-table";
-import { ProjectTabs } from "@/components/tabs/project-tabs";
+import { columns } from "@/components/columns/tasks-list"
+import { DataTable } from "@/components/data-table/data-table"
+import { ProjectTabs } from "@/components/tabs/project-tabs"
 
 const data = [
   {
@@ -783,15 +783,15 @@ const data = [
     label: "bug",
     priority: "low",
   },
-];
+]
 
 export default function ProjectListPage() {
   return (
-    <div>
+    <div className="ms-2">
       <ProjectTabs />
       <div>
         <DataTable columns={columns} data={data} />
       </div>
     </div>
-  );
+  )
 }

@@ -110,7 +110,9 @@ export function DataTable({ columns, data, onDelete }) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <div className="mt-2">
+        <DataTablePagination table={table} />
+      </div>
     </div>
   )
 }

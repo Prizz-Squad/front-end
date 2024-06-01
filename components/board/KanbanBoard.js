@@ -309,7 +309,7 @@ export function KanbanBoard({ cols = defaultCols }) {
         </DragOverlay>
       </DndContext>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="flex justify-between p-14  min-w-[54%] h-[80%]  flex-col md:flex-row">
+        <DialogContent className="flex justify-between p-14 md:min-w-[45rem] lg:min-w-[60rem] h-[80%]  flex-col md:flex-row">
           <div className="flex flex-col  w-[54%] justify-between">
             <DialogHeader>
               <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
@@ -350,18 +350,32 @@ export function KanbanBoard({ cols = defaultCols }) {
 
           <div className="flex flex-col min-w-2/3 justify-around">
             <div>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="In Progress" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="in-progress">In Progress</SelectItem>
-                    <SelectItem value="todo">To-Do</SelectItem>
-                    <SelectItem value="done">Done</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <div className="flex gap-2">
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="In Progress" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="in-progress">In Progress</SelectItem>
+                      <SelectItem value="todo">To-Do</SelectItem>
+                      <SelectItem value="done">Done</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Medium" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="in-progress">High</SelectItem>
+                      <SelectItem value="todo">Medium</SelectItem>
+                      <SelectItem value="done">Low</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
 
               <div className="m-1">
                 <p className="font-bold text-xl mt-2">Details</p>

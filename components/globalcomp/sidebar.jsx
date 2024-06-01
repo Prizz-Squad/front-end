@@ -75,6 +75,7 @@ import {
 import { useRouter } from "next/router"
 import React from "react"
 import { ModeToggle } from "../toggles/dark-light-mode"
+import { ProjectCombobox } from "../combobox/project"
 
 export default function Sidebar() {
   const components = [
@@ -149,7 +150,11 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 href="/projects/1/board" //TODO: Update href
-                className={`${router.pathname && router.pathname  === "/projects/[id]/board" ? " dark:text-black text-accent-foreground bg-gray-100" : " text-muted-foreground"} flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                className={`${
+                  router.pathname && router.pathname === "/projects/[id]/board"
+                    ? " dark:text-black text-accent-foreground bg-gray-100"
+                    : " text-muted-foreground"
+                } flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
               >
                 <Clipboard className="h-5 w-5" />
                 <span className="sr-only">Board</span>
@@ -161,7 +166,11 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 href="/projects"
-                className={`${router.pathname && router.pathname  === "/projects" ? " text-accent-foreground bg-gray-100 dark:text-black" : " text-muted-foreground"} flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                className={`${
+                  router.pathname && router.pathname === "/projects"
+                    ? " text-accent-foreground bg-gray-100 dark:text-black"
+                    : " text-muted-foreground"
+                } flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
               >
                 <FolderOpenDot className="h-5 w-5" />
                 <span className="sr-only">Projects</span>
@@ -173,7 +182,11 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 href="#"
-                className={`${router.pathname && router.pathname  === "/users" ? " dark:text-black text-accent-foreground bg-gray-100" : " text-muted-foreground"} flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                className={`${
+                  router.pathname && router.pathname === "/users"
+                    ? " dark:text-black text-accent-foreground bg-gray-100"
+                    : " text-muted-foreground"
+                } flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
               >
                 <UserRound className="h-5 w-5" />
                 <span className="sr-only">Users</span>
@@ -187,7 +200,11 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 href="/settings"
-                className={`${router.pathname && router.pathname  === "/settings" ? " dark:text-black text-accent-foreground bg-gray-100" : " text-muted-foreground"} flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                className={`${
+                  router.pathname && router.pathname === "/settings"
+                    ? " dark:text-black text-accent-foreground bg-gray-100"
+                    : " text-muted-foreground"
+                } flex h-9 w-9  items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
               >
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Settings</span>
@@ -245,6 +262,7 @@ export default function Sidebar() {
             </nav>
           </SheetContent>
         </Sheet>
+        <ProjectCombobox />
         <NavigationMenu className="ml-14 hidden  lg:flex">
           <NavigationMenuList>
             {router.pathname !== "/login" && router.pathname !== "/signup" && (

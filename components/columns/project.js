@@ -56,12 +56,6 @@ export const columns = [
     },
   },
   {
-    accessorKey: "clientName",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Client" />
-    },
-  },
-  {
     id: "actions",
     cell: ({ row }) => {
       const payment = row.original
