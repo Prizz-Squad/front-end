@@ -40,6 +40,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
+import { toBase64 } from "@/utils/files"
+import { toast } from "sonner"
 
 const defaultCols = [
   {
@@ -261,6 +263,22 @@ export function KanbanBoard({ cols = defaultCols }) {
   }
   console.log(dialogTask, "tialog")
 
+  const fileInput = useRef(null)
+
+  const handleButtonClick = () => {
+    fileInput.current.click()
+  }
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0]
+    console.log("file", file) // Do something with the file
+
+    const base64String = await toBase64(file)
+    console.log("base64String", base64String)
+
+    toast("File uploaded successfully")
+  }
+
   return (
     <>
       <Input
@@ -314,7 +332,17 @@ export function KanbanBoard({ cols = defaultCols }) {
             <DialogHeader>
               <DialogTitle>{dialogTask?.title || "Title"}</DialogTitle>
               <div>
-                <Button variant="ghost" className="p-0">
+                <input
+                  type="file"
+                  style={{ display: "none" }}
+                  ref={fileInput}
+                  onChange={handleFileChange}
+                />
+                <Button
+                  variant="ghost"
+                  className="px-1"
+                  onClick={handleButtonClick}
+                >
                   <PaperclipIcon size={20} />
                   Attach a file
                 </Button>
